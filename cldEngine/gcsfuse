@@ -1,0 +1,12 @@
+#!/bin/bash
+
+export GCSFUSE_REPO=gcsfuse-`lsb_release -c -s`
+echo "deb http://packages.cloud.google.com/apt $GCSFUSE_REPO main" | tee /etc/apt/sources.list.d/gcsfuse.list
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+apt-get update
+apt-get -y install gcsfuse
+mkdir /mnt/input
+mkdir /mnt/output
+echo "<<bucketname>> /mnt/input gcsfuse rw,allow_other,file_mode=777,dir_mode=777" >> /etc/fstab
+echo "<<bucketname>> /mnt/output gcsfuse rw,allow_other,file_mode=777,dir_mode=777" >> /etc/fstab
+mount -a
